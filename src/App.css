@@ -81,3 +81,20 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+.data-table {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.nav-table {
+  margin: 10px;
+}
+
+.search-table {
+  float: right;
+}
+
+.page-table {
+  float: left;
+}
