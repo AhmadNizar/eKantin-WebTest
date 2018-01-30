@@ -11,52 +11,71 @@ class App extends Component {
       menus: '',
       initDataTable: [],
       dataTable: '',
-      nameSortStatus: 'up'
+      sortStatus: 'up'
     }
   }
-  sortByName = () => {
-    console.log('jos')
+  sortDataTable = (inputType) => {
     let tempDataTable = this.state.dataTable
-    // sort by name
-    if(this.state.nameSortStatus === 'down') {
-      tempDataTable.sort(function(a, b) {
-        var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-        var nameB = b.name.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        // names must be equal
-        return 0;
-      });
+    let inputA = ''
+    let inputB = ''
+    let tempSortStatus = this.state.sortStatus
 
-      this.setState({
-        dataTable: tempDataTable,
-        nameSortStatus: 'up'
-      })
+    tempDataTable.sort((a, b) => {
+      if(inputType === 'name') {
+        inputA = a.name.toUpperCase()
+        inputB = b.name.toUpperCase()
+      }
+
+      if(inputType === 'position') {
+        inputA = a.position.toUpperCase()
+        inputB = b.position.toUpperCase()
+      }
+
+      if(inputType === 'office') {
+        inputA = a.office.toUpperCase()
+        inputB = b.office.toUpperCase()
+      }
+
+      if(inputType === 'age') {
+        inputA = a.age
+        inputB = b.age
+      }
+
+      if(this.state.sortStatus === 'down') {
+        if (inputA < inputB) {
+          return -1
+        }
+
+        if (inputA > inputB) {
+          return 1
+        }
+
+        return 0
+      }
+
+      if(this.state.sortStatus === 'up') {
+        if (inputA > inputB) {
+          return -1
+        }
+
+        if (inputA < inputB) {
+          return 1
+        }
+
+        return 0
+      }
+    })
+
+    if(tempSortStatus === 'down') {
+      tempSortStatus = 'up'
+    } else {
+      tempSortStatus = 'down'
     }
 
-    if(this.state.nameSortStatus === 'up') {
-      tempDataTable.sort(function(a, b) {
-        var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-        var nameB = b.name.toUpperCase(); // ignore upper and lowercase
-        if (nameA > nameB) {
-          return -1;
-        }
-        if (nameA < nameB) {
-          return 1;
-        }
-        // names must be equal
-        return 0;
-      });
-
-      this.setState({
-        dataTable: tempDataTable,
-        nameSortStatus: 'down'
-      })
-    }
+    this.setState({
+      dataTable: tempDataTable,
+      sortStatus: tempSortStatus
+    })
   }
   dropdownFunction() {
     document.getElementById("myDropdown").classList.toggle("show");
@@ -125,10 +144,10 @@ class App extends Component {
         <div className="data-table">
           <table>
             <tr>
-              <th onClick={this.sortByName}><a>Name</a></th>
-              <th>Position</th>
-              <th>Office</th>
-              <th>Age</th>
+              <th onClick={() => this.sortDataTable('name')}><a>Name</a></th>
+              <th onClick={() => this.sortDataTable('position')}>Position</th>
+              <th onClick={() => this.sortDataTable('office')}>Office</th>
+              <th onClick={() => this.sortDataTable('age')}>Age</th>
               <th>Start date</th>
               <th>Salary</th>
             </tr>
